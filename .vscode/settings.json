@@ -1,0 +1,17 @@
+{
+    "files.exclude": {
+        "**/*.d": true,
+        "**/*.o": true,
+        "**/*.css": true,
+        ".cache": true,
+        ".vscode": true,
+        "compile_commands.json": true,
+        "dshell": true
+    },
+    "files.associations": {
+        "app.h": "c",
+        "application.h": "c",
+        "utils.h": "c",
+        "corners.h": "c"
+    }
+}
