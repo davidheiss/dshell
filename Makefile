@@ -13,7 +13,7 @@ LDLIBS = $(shell pkg-config -libs $(packages))
 sources := $(shell find -name "*.c")
 
 %.d: %.c
-	$(CC) $(CFLAGS) -MM -MT $(@:.d=.o) $< -MF $@
+	$(CC) $(CFLAGS) -M -MT $(@:.d=.o) $< -MF $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -31,7 +31,7 @@ clean:
 	@rm -vf **/*.d **/*.o
 
 distclean: clean
-	rm style.css
+	@rm -fv style.css
 
 run: all
 	@./dshell
@@ -42,6 +42,6 @@ debug: all
 memcheck: all
 	valgrind --leak-check=full ./dshell
 
-ifeq (,$(filter clean,$(MAKECMDGOALS)))
+ifeq (,$(filter %clean,$(MAKECMDGOALS)))
 include $(sources:.c=.d)
 endif

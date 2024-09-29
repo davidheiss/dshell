@@ -29,12 +29,12 @@
       "-pthread",
       "-c",
       "-o",
-      "src/main.o",
-      "src/main.c"
+      "src/windows/corners.o",
+      "src/windows/corners.c"
     ],
     "directory": "/home/dh/Documents/dshell",
-    "file": "/home/dh/Documents/dshell/src/main.c",
-    "output": "/home/dh/Documents/dshell/src/main.o"
+    "file": "/home/dh/Documents/dshell/src/windows/corners.c",
+    "output": "/home/dh/Documents/dshell/src/windows/corners.o"
   },
   {
     "arguments": [
@@ -66,17 +66,17 @@
       "-pthread",
       "-c",
       "-o",
-      "src/application.o",
-      "src/application.c"
+      "src/app.o",
+      "src/app.c"
     ],
     "directory": "/home/dh/Documents/dshell",
-    "file": "/home/dh/Documents/dshell/src/application.c",
-    "output": "/home/dh/Documents/dshell/src/application.o"
+    "file": "/home/dh/Documents/dshell/src/app.c",
+    "output": "/home/dh/Documents/dshell/src/app.o"
   },
   {
     "arguments": [
       "/usr/bin/gcc",
-      "-O0",
+      "-O2",
       "-g",
       "-I",
       "include",
@@ -103,11 +103,11 @@
       "-pthread",
       "-c",
       "-o",
-      "src/windows/corners.o",
-      "src/windows/corners.c"
+      "src/main.o",
+      "src/main.c"
     ],
     "directory": "/home/dh/Documents/dshell",
-    "file": "/home/dh/Documents/dshell/src/windows/corners.c",
-    "output": "/home/dh/Documents/dshell/src/windows/corners.o"
+    "file": "/home/dh/Documents/dshell/src/main.c",
+    "output": "/home/dh/Documents/dshell/src/main.o"
   }
 ]

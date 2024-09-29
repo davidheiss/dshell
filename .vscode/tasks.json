@@ -1,0 +1,19 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Sass watch",
+            "command": "sass --no-error-css --no-source-map --watch style/application.scss style.css",
+            "type": "shell",
+            "problemMatcher": [
+                "$node-sass"
+            ],
+            "runOptions": {
+                "runOn": "folderOpen"
+            },
+            "presentation": {
+                "reveal": "never"
+            },
+        }
+    ]
+}
