@@ -3,7 +3,7 @@
     "tasks": [
         {
             "label": "Sass watch",
-            "command": "sass --no-error-css --no-source-map --watch style/application.scss style.css",
+            "command": "sass --no-error-css --no-source-map --watch style/app.scss style.css",
             "type": "shell",
             "problemMatcher": [
                 "$node-sass"

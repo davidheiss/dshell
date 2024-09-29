@@ -21,7 +21,7 @@ sources := $(shell find -name "*.c")
 dshell: $(sources:.c=.o)
 	$(LD) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-style.css: style/application.scss $(wildcard style/**/*.scss)
+style.css: style/app.scss $(wildcard style/**/*.scss)
 	sass --no-source-map $< $@
 
 all: style.css
