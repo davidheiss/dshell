@@ -4,7 +4,7 @@
 packages = gtk4 gtk4-layer-shell-0
 
 CC = gcc
-CFLAGS = -O2 -g -I include $(shell pkg-config -cflags $(packages)) 
+CFLAGS = -g -O2 -I include $(shell pkg-config -cflags $(packages))
 
 LD = $(CC)
 LDFLAGS = $(CFLAGS)
@@ -28,7 +28,8 @@ all: style.css
 	bear --append -- $(MAKE) dshell
 
 clean:
-	@rm -vf **/*.d **/*.o
+	@find . \( -name "*.d" -o -name "*.o" \) -exec rm -v {} +
+	@ rm -vf dshell
 
 distclean: clean
 	@rm -fv style.css

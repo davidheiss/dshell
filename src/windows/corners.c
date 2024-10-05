@@ -1,4 +1,4 @@
-#include <windows/corners.h>
+#include <dshell/windows/corners.h>
 #include <gtk-layer-shell/gtk-layer-shell.h>
 
 GtkApplicationWindow *shell_windows_corners_new(GtkApplication *app)

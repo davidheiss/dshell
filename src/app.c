@@ -1,6 +1,6 @@
-#include <app.h>
-#include <utils.h>
-#include <windows/corners.h>
+#include <dshell/app.h>
+#include <dshell/utils/array_size.h>
+#include <dshell/windows/corners.h>
 #include <gio/gio.h>
 
 static void css_changed(GFileMonitor *monitor, GFile *file, GFile *other_file,

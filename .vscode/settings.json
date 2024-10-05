@@ -12,6 +12,8 @@
         "app.h": "c",
         "application.h": "c",
         "utils.h": "c",
-        "corners.h": "c"
+        "corners.h": "c",
+        "panel.h": "c",
+        "array": "c"
     }
 }
