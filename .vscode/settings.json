@@ -9,11 +9,8 @@
         "dshell": true
     },
     "files.associations": {
-        "app.h": "c",
-        "application.h": "c",
-        "utils.h": "c",
-        "corners.h": "c",
-        "panel.h": "c",
-        "array": "c"
-    }
+        "*.h": "c",
+    },
+    "task.autoDetect": "off",
+    "task.quickOpen.skip": true,
 }
