@@ -10,6 +10,8 @@
     },
     "files.associations": {
         "*.h": "c",
+        "includes.hpp": "c",
+        "shareddefs.hpp": "c"
     },
     "task.autoDetect": "off",
     "task.quickOpen.skip": true,
