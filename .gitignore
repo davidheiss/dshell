@@ -1,5 +1,2 @@
-*.d
-*.o
-*.css
-.cache
-dshell
+**/__pycache__
+.mypy_cache
