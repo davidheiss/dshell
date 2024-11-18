@@ -13,12 +13,28 @@ WORKSPACE_SIZE = 16
 WORKSPACE_SPACING = 4
 
 
+def easeInSine(x: float):
+    return 1 - math.cos(x * math.pi / 2)
+
+
+def easeInOutBack(x: float):
+    c1 = 1.70158
+    c2 = c1 * 1.525
+
+    return (
+        (math.pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
+        if x < 0.5
+        else (math.pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
+    )
+
+
 class Animation:
     def __init__(
         self,
         widget: Gtk.DrawingArea,
         duration: datetime.timedelta,
         value: float = 0,
+        timing=easeInOutBack,
     ):
         self.widget = widget
         self.duration = duration
@@ -27,6 +43,7 @@ class Animation:
         self.value = value
         self.id = None
         self.time = None
+        self.timing = timing
 
     def animate(self, to: float):
         self.time = datetime.datetime.now()
@@ -39,7 +56,9 @@ class Animation:
     def tick(self, *args):
         duration = datetime.datetime.now() - self.time
         progress = min(duration / self.duration, 1)
-        self.value = self.start * (1-progress) + self.goal * progress
+        self.value = self.start * (1 - self.timing(progress)) + self.goal * self.timing(
+            progress
+        )
         self.widget.queue_draw()
         return progress < 1
 
@@ -66,8 +85,10 @@ class Workspaces(Gtk.DrawingArea):
         active_id = Hyprland.active_workspace().id
         self.active_animation = Animation(
             self,
-            datetime.timedelta(milliseconds=100),
-            value=(active_id-1) * (WORKSPACE_SPACING + WORKSPACE_SIZE * 2) + WORKSPACE_SPACING + WORKSPACE_SIZE,
+            datetime.timedelta(milliseconds=300),
+            value=(active_id - 1) * (WORKSPACE_SPACING + WORKSPACE_SIZE * 2)
+            + WORKSPACE_SPACING
+            + WORKSPACE_SIZE,
         )
 
         hyprland = Hyprland.instance()
@@ -77,7 +98,9 @@ class Workspaces(Gtk.DrawingArea):
 
     def on_workspace(self, hyprland: Hyprland, id: str, name: str):
         self.active_animation.animate(
-            (int(id)-1) * (WORKSPACE_SPACING + WORKSPACE_SIZE * 2) + WORKSPACE_SPACING + WORKSPACE_SIZE,
+            (int(id) - 1) * (WORKSPACE_SPACING + WORKSPACE_SIZE * 2)
+            + WORKSPACE_SPACING
+            + WORKSPACE_SIZE,
         )
 
     def on_create_workspace(self, hyprland: Hyprland, id: str, name: str):
@@ -94,7 +117,13 @@ class Workspaces(Gtk.DrawingArea):
         y = height / 2
 
         context.new_path()
-        context.arc(self.active_animation.value, y, WORKSPACE_SIZE, 0, math.pi * 2)
+        context.arc(
+            self.active_animation.value,
+            y,
+            WORKSPACE_SIZE,
+            0,
+            math.pi * 2,
+        )
         context.set_source_rgb(0, 1, 0)
         context.fill()
 
@@ -106,7 +135,10 @@ class Workspaces(Gtk.DrawingArea):
             context.set_font_size(18)
             context.set_source_rgb(1, 1, 1)
             text_extends = context.text_extents(str(i))
-            context.move_to(x - text_extends.width / 2, y + text_extends.height / 2)
+            context.move_to(
+                x - text_extends.x_bearing * 2 - text_extends.width / 2,
+                y + text_extends.height / 2,
+            )
             context.show_text(str(i))
             context.stroke()
 
