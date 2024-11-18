@@ -7,7 +7,7 @@
 }
 
 .panel .corners {
-    box-shadow: 0 var(--inf-px) 0 var(--inf-px) var(--panel-color), 0 0 14px 2px black;
+    box-shadow: 0 var(--inf-px) 0 var(--inf-px) var(--panel-color), 0 0 12px 4px black;
     border-radius: 16px 16px 0 0;
 }
 
