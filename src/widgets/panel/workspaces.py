@@ -27,8 +27,35 @@ def workspace_pos(id: int | str):
 
 
 class Workspace:
+    @staticmethod
+    def create(
+        widget: Gtk.DrawingArea,
+        ids: list[int],
+        active: list[int],
+        duration: timedelta = timedelta(milliseconds=1000),
+    ):
+        workspaces: list[Workspace] = []
+        workspace: Workspace = None
+        for id in ids:
+            new_workspace = Workspace(widget, duration, id, id in active)
+            if workspace is not None:
+                workspace.right = new_workspace
+            new_workspace.left = workspace
+            workspace = new_workspace
+            workspaces.append(workspace)
+        for workspace in workspaces:
+            workspace.update()
+        return workspaces
+
+    left: "Workspace" = (None,)
+    right: "Workspace" = None
+
     def __init__(
-        self, widget: Gtk.DrawingArea, duration: timedelta, id: int, active: bool
+        self,
+        widget: Gtk.DrawingArea,
+        duration: timedelta,
+        id: int,
+        active: bool,
     ):
         self.id = id
         self.active = active
@@ -36,9 +63,30 @@ class Workspace:
         self.start = Animation(widget, duration, workspace_pos(id))
         self.end = Animation(widget, duration, workspace_pos(id))
         self.color = Animation(widget, duration, 1 if active else 0)
-    
+
+    def __repr__(self):
+        return f"Workspace({vars(self)})"
+
     def draw(self, context: cairo.Context, height: int, width: int):
-        pass
+        y = height / 2
+        start_x = self.start.value
+        end_x = self.end.value
+        context.arc(start_x, y, WORKSPACE_SIZE, math.pi * 1 / 2, math.pi * 3 / 2)
+        context.arc(end_x, y, WORKSPACE_SIZE, math.pi * 3 / 2, math.pi * 1 / 2)
+        context.set_source_rgba(1, 0, 0, self.color.value)
+        context.fill()
+
+    def update(self, animate=True):
+        active = self.active
+        right = self.right and self.right.active
+        left = self.left and self.left.active
+        single = not (left or right)
+
+        self.color.to(
+            1 if active else 0,
+            single and animate
+        )
+
 
 class Workspaces(Gtk.DrawingArea):
     def __init__(self):
@@ -61,26 +109,42 @@ class Workspaces(Gtk.DrawingArea):
             workspace_pos(active_id),
         )
 
-        workspace_ids = list(map(lambda x: x.id, Hyprland.workspaces()))
-        self.workspaces = []
-        for id in range(WORKSPACE_COUNT):
-            self.workspaces.append(Workspace(self, duration, id, id in workspace_ids))
+        ids = list(map(lambda x: x.id, Hyprland.workspaces()))
+        self.workspaces = Workspace.create(self, range(1, WORKSPACE_COUNT + 1), ids)
 
         hyprland = Hyprland.instance()
         hyprland.connect("workspacev2", self.on_workspace)
         hyprland.connect("createworkspacev2", self.on_create_workspace)
         hyprland.connect("destroyworkspacev2", self.on_destroy_workspace)
 
+    def update(self):
+        print(list(map(lambda x: x.active, self.workspaces)))
+        for workspace in self.workspaces:
+            workspace.update()
+
     def on_workspace(self, hyprland: Hyprland, id: str, name: str):
-        self.active_animation.animate(workspace_pos(id))
+        self.active_animation.to(workspace_pos(id))
 
     def on_create_workspace(self, hyprland: Hyprland, id: str, name: str):
-        pass
+        id = int(id)
+        for workspace in self.workspaces:
+            if workspace.id == id:
+                workspace.active = True
+                break
+        self.update()
 
     def on_destroy_workspace(self, hyprland: Hyprland, id: str, name: str):
-        pass
+        id = int(id)
+        for workspace in self.workspaces:
+            if workspace.id == id:
+                workspace.active = False
+                break
+        self.update()
 
     def on_draw(self, _, context: Context, width: int, height: int):
+        for workspace in self.workspaces:
+            workspace.draw(context, height, width)
+
         y = height / 2
         x = WORKSPACE_SIZE + WORKSPACE_SPACING
 

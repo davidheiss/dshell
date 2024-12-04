@@ -13,26 +13,35 @@ class Animation:
         timing: Callable[[float], float] = easeInSine,
         on_done: Callable = None,
     ):
+        assert isinstance(widget, Gtk.DrawingArea)
+        assert isinstance(duration, timedelta)
+
         self.id = None
         self.widget = widget
         self.duration = duration
         self.value = value
         self.timing = timing
         self.on_done = on_done
+    
+    def __repr__(self):
+        return f"Animation({vars(self)})"
 
     def __rmul__(self, lhs: float):
         return lhs * self.value
 
-    def set(self, value: float):
-        pass
-
-    def animate(self, value: float):
-        self.start = self.value
-        self.end = value
+    def to(self, value: float, animate = True):
         self.start_time = datetime.now()
-        if self.id is not None:
-            self.widget.remove_tick_callback(self.id)
-        self.widget.add_tick_callback(self.tick)
+        if animate:
+            self.start = self.value
+            self.end = value
+            if self.id is not None:
+                self.widget.remove_tick_callback(self.id)
+            self.widget.add_tick_callback(self.tick)
+        else:
+            self.start = self.value
+            self.end = self.value = value
+            self.widget.queue_draw()
+
 
     def tick(self, *args):
         now = datetime.now()
