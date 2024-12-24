@@ -1,1 +1,0 @@
-from .hyprland import Hyprland

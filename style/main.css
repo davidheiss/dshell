@@ -1,0 +1,32 @@
+@import url(colors.css);
+
+.unset * {
+    all: unset;
+}
+
+.panel {
+    background-color: var(--background);
+    padding: 0 8px;
+}
+
+.workspace { 
+    padding: 4px;
+    border-radius: 16px;
+    background-color: transparent;
+    transition: all ease 150ms;
+}
+
+.workspace:hover {
+    background-color: rgba(0,0,0,0.2);
+}
+
+.workspace:active {
+    background-color: rgba(0,0,0,0.3);
+}
+
+.corner {
+    --size: 100000px;
+    --radius: 16px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    box-shadow: 0 var(--size) 0 var(--size) var(--background), 0 0 var(--radius) 0 var(--shadow);
+}
