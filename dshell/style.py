@@ -13,8 +13,8 @@ class CSSLoader(Gtk.CssProvider):
 
         dir = Gio.file_new_for_path(dirname(path))
 
-        self.monitor = dir.monitor_directory(Gio.FileMonitorFlags.NONE)
-        self.monitor.connect("changed", self.do_changed)
+        self._monitor = dir.monitor_directory(Gio.FileMonitorFlags.NONE)
+        self._monitor.connect("changed", self.do_changed)
 
         display = Gdk.Display.get_default()
         assert display is not None

@@ -10,7 +10,7 @@ class Date(Gtk.Label):
         datetime = get_service(DateTime)
         super().__init__(
             label=datetime.value.format(FORMAT),
-            css_classes=["date"]
+            css_classes=["date"],
         )
         datetime.connect("changed", self.do_changed)
 

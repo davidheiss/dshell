@@ -6,7 +6,7 @@ from ..service import get_service, Hyprland
 class Title(Gtk.Label):
     def __init__(self):
         super().__init__(
-            label=Hyprland.command("activewindow")["title"],
+            label=Hyprland.command("activewindow").get("title"),
             css_classes=["title"],
             max_width_chars=32,
             ellipsize=Pango.EllipsizeMode.END,

@@ -1,6 +1,6 @@
 from gi.repository import Gtk, Gtk4LayerShell as LayerShell # type: ignore
 
-from ..widget import Workspace, Title, Date
+from ..widget import Workspace, Title, Date, Battery
 
 HEIGHT = 32
 CORNERS = 16
@@ -29,6 +29,8 @@ class PanelWindow(Gtk.ApplicationWindow):
         start.append(Title())
 
         center.append(Date())
+
+        end.append(Battery())
 
         panel = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
         panel.append(

@@ -2,8 +2,16 @@ from .service import Service
 from .manager import Manager
 from .hyprerland import Hyprland
 from .datetime import DateTime
+from .battery import Battery
 
-__all__ = ["Service", "Manager", "Hyprland", "DateTime", "get_service"]
+__all__ = [
+    "Service",
+    "Manager",
+    "Hyprland",
+    "DateTime",
+    "Battery",
+    "get_service",
+]
 
 
 def get_service[T: Service](service: type[T]):
