@@ -1,7 +1,7 @@
 from gi.repository import Gtk # type: ignore
 
 from .style import CSSLoader
-from .service import Manager
+from .service import Services
 from .window import PanelWindow
 
 APPLICATION_ID = "com.github.davidheiss.dshell"
@@ -16,7 +16,7 @@ class App(Gtk.Application):
         super().__init__(*args, **kwargs, application_id=APPLICATION_ID)
 
         self.css = CSSLoader("style/main.css")
-        self.services = Manager()
+        self.service_manager = Services()
 
     def do_activate(self):
         self.panel = PanelWindow(self)

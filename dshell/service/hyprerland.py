@@ -14,7 +14,7 @@ SIGNALS = {
 }
 
 
-class Hyprland(Service):
+class HyprlandService(Service):
     @staticmethod
     def command(command: str):
         address = Gio.UnixSocketAddress.new(

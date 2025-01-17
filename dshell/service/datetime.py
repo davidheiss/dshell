@@ -7,7 +7,7 @@ SIGNALS = {
 }
 
 
-class DateTime(Service):
+class DateTimeService(Service):
     __gsignals__ = SIGNALS
 
     def __init__(self):

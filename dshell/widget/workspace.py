@@ -5,7 +5,7 @@ from gi.repository import Gtk, Gdk  # type: ignore
 import cairo
 
 from ..animation import Animation, Color
-from ..service import get_service, Hyprland
+from ..service import get_service, HyprlandService
 
 COUNT = 5
 SIZE_DEFAULT = 10
@@ -80,28 +80,28 @@ class WorkspaceDrawing(Gtk.DrawingArea):
 
         self.set_draw_func(self.do_draw)
 
-        active = int(Hyprland.command("activeworkspace")["id"])
-        created = list(map(lambda x: int(x["id"]), Hyprland.command("workspaces")))
+        active = int(HyprlandService.command("activeworkspace")["id"])
+        created = list(map(lambda x: int(x["id"]), HyprlandService.command("workspaces")))
         self.workspaces = [
             _Workspace(self, id, id == active, id in created)
             for id in range(1, COUNT + 1)
         ]
         self.index = active - 1
 
-        hyprland = get_service(Hyprland)
+        hyprland = get_service(HyprlandService)
         hyprland.connect("workspacev2", self.do_workspacev2)
         hyprland.connect("createworkspacev2", self.do_createworkspacev2)
         hyprland.connect("destroyworkspacev2", self.do_destroyworkspacev2)
 
-    def do_createworkspacev2(self, service: Hyprland, id: str, name: str):
+    def do_createworkspacev2(self, service: HyprlandService, id: str, name: str):
         index = int(id) - 1
         self.workspaces[index].create()
 
-    def do_destroyworkspacev2(self, service: Hyprland, id: str, name: str):
+    def do_destroyworkspacev2(self, service: HyprlandService, id: str, name: str):
         index = int(id) - 1
         self.workspaces[index].destroy()
 
-    def do_workspacev2(self, service: Hyprland, id: str, name: str):
+    def do_workspacev2(self, service: HyprlandService, id: str, name: str):
         self.workspaces[self.index].deactivate()
         index = int(id) - 1
         self.workspaces[index].activate()

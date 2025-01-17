@@ -1,20 +1,20 @@
 from .service import Service
-from .manager import Manager
-from .hyprerland import Hyprland
-from .datetime import DateTime
-from .battery import Battery
+from .services import Services
+from .hyprerland import HyprlandService
+from .datetime import DateTimeService
+from .battery import BatteryService
 
 __all__ = [
     "Service",
-    "Manager",
-    "Hyprland",
-    "DateTime",
-    "Battery",
+    "Services",
+    "HyprlandService",
+    "DateTimeService",
+    "BatteryService",
     "get_service",
 ]
 
 
-def get_service[T: Service](service: type[T]):
+def get_service[T: Service](service: type[T]) -> T:
     from ..app import App
 
-    return App.instance().services.get(service)
+    return App.instance().service_manager[service]

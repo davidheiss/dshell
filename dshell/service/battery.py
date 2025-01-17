@@ -1,25 +1,30 @@
-from gi.repository import GObject, Gio # type: ignore
+from gi.repository import GObject, GLib # type: ignore
 
 from .service import Service
 
 SIGNALS = {
-    "changed": (GObject.SignalFlags.RUN_FIRST, None, (float,)),
+    "capacity": (GObject.SignalFlags.RUN_FIRST, None, (int,)),
 }
 
-class Battery(Service):
+class BatteryService(Service):
     __gsignals__ = SIGNALS
 
     def __init__(self):
         super().__init__()
 
-        path = "class/power_supply/BAT0"
-        dir = Gio.file_new_for_path(path)
+        self.capacity: int = None
 
-        self._monitor = dir.monitor_directory(Gio.FileMonitorFlags.NONE)
-        self._monitor.connect("changed", self.do_changed)
-    
-    def do_changed(self, *args):
-        print(args)
+        self.update()
+        GLib.timeout_add_seconds(1, self.update)
 
+
+    def update(self):
+        path = "/sys/class/power_supply/BAT0/capacity"
+        with open(path) as file:
+            capacity = int(file.read().strip())
         
-
+        if self.capacity != capacity:
+            self.emit("capacity", capacity)
+        self.capacity = capacity
+        
+        return True
