@@ -8,6 +8,7 @@ class Battery(Gtk.Label):
 
         super().__init__(
             label=f"{battery.capacity}%",
+            visible=battery.capacity is not None,
             css_classes=["battery"],
         )
 

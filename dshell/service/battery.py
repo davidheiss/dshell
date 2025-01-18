@@ -1,3 +1,5 @@
+import os
+
 from gi.repository import GObject, GLib # type: ignore
 
 from .service import Service
@@ -20,11 +22,15 @@ class BatteryService(Service):
 
     def update(self):
         path = "/sys/class/power_supply/BAT0/capacity"
+        if not os.path.exists(path):
+            return False
+
         with open(path) as file:
             capacity = int(file.read().strip())
         
         if self.capacity != capacity:
             self.emit("capacity", capacity)
+
         self.capacity = capacity
-        
+
         return True
